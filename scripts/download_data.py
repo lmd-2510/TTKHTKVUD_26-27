@@ -4,6 +4,7 @@ import csv
 from collections import Counter
 import hashlib
 from http.client import HTTPException
+from io import StringIO
 import json
 import os
 import shutil
@@ -124,7 +125,13 @@ def download_object(obj, destination):
 
 
 def read_tsv(path, field):
-    with path.open(encoding="utf-8-sig", newline="") as source:
+    raw = path.read_bytes()
+    try:
+        contents = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        # Some source TSVs contain legacy single-byte text such as the micro sign.
+        contents = raw.decode("latin-1")
+    with StringIO(contents, newline="") as source:
         rows = csv.DictReader(source, delimiter="\t")
         if field not in (rows.fieldnames or ()):
             raise ValueError(f"Missing {field} column: {path}")
