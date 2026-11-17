@@ -25,7 +25,11 @@ preprocessing:
   resample_hz: 128
   reject_peak_to_peak_uv: 150.0
   flat_peak_to_peak_uv: 0.1
-  ica_status: pending_quality_review
+  ica:
+    fit_highpass_hz: 1.0
+    fit_sfreq_hz: 250
+    n_components: 30
+    random_state: 42
 
 split:
   group: participant

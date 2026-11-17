@@ -19,11 +19,34 @@ python scripts/build_data_report.py --manifest data/raw/ds004621/download_manife
 - PDF tiếng Anh được tạo tại `docs/report/data_acquisition.pdf`. Có thể chạy script tạo PDF khi chưa có manifest. Bản đó để phần kiểm kê ở trạng thái chờ.
 - Dữ liệu lấy từ bản sao công khai S3 của OpenNeuro. Manifest lưu ETag từng file để đối chiếu nguồn đã dùng.
 
+## Preprocessing trên server
+
+Chạy thử một người trong venv của repo. Giới hạn số luồng tính toán để chia sẻ CPU với các tiến trình khác trên server.
+
+```bash
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/preprocess.py --subjects sub-01
+```
+
+- Script đối chiếu mốc `S 5` và `S 6` giữa `events.tsv` và BrainVision, áp dụng tham chiếu trung bình, lọc 0,5–30 Hz và fit ICA riêng cho từng người.
+- ICA fit trên bản sao 250 Hz được lọc thông cao 1 Hz. Mô hình mặc định có tối đa 30 thành phần. Khi có EOG, MNE dùng tương quan với EOG để tìm thành phần mắt. Nếu chỉ có kênh trán làm tín hiệu tham khảo, script lưu điểm và thành phần ứng viên để xem lại. Trạng thái `manual_review_required` cho biết chưa có quyết định loại thành phần. File ICA đã fit nằm trong thư mục QC.
+- Script resample tín hiệu cùng mốc sự kiện về 128 Hz rồi cắt lượt. Chỉnh nền khoảng −200 đến 0 ms trên lưới mẫu 128 Hz, loại lượt theo biên độ đỉnh-đỉnh trên toàn epoch và giữ 0–1.000 ms cho model. Ngưỡng là 150 µV và 0,1 µV.
+- File `data/processed/sub-01.npz` chứa `X` theo thứ tự lượt × kênh × thời gian, `y` với 0 = standard và 1 = target, tên kênh, thời điểm tương đối và mẫu sự kiện gốc. Tín hiệu lưu theo volt. Trước khi gộp người để train, kiểm tra tên và thứ tự kênh trong từng file.
+- Xem `results/quality/preprocessing/sub-01.json` hoặc `summary_sub-01.json` để đối chiếu số lượt mỗi lớp, lý do loại lượt, kênh và trạng thái ICA. Một lượt có thể có nhiều lý do loại. Dùng trạng thái ICA trong QC để biết file nào còn cần xem lại.
+
+Khi đã duyệt thành phần ICA, có thể truyền `--ica-review /path/to/ica_review.json`. JSON ánh xạ từng mã người tới `exclude` (danh sách chỉ số thành phần, bắt đầu từ 0) và `reason` (căn cứ thực tế). Danh sách rỗng có ý nghĩa giữ tất cả sau khi đã duyệt. Giữ nguyên cấu hình và phiên bản thư viện khi dùng lại chỉ số thành phần từ lần chạy thử.
+
+Chạy ba người cần xem riêng sau khi kiểm tra `sub-01`.
+
+```bash
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/preprocess.py --subjects sub-02 sub-14 sub-17
+```
+
+Bỏ `--subjects` để chạy đủ 42 người. `summary_all.json` ghi kết quả và lỗi theo người. Kiểm tra tổng hợp trước khi chốt danh sách người dùng để train/test.
+
 ## Các script tiếp theo
 
 | Script | Vai trò |
 |---|---|
-| `preprocess.py` | Đọc, lọc, cắt lượt, chỉnh nền và kiểm tra chất lượng. |
 | `extract_features.py` | Tạo đặc trưng 50 ms cho ML. |
 | `train_ml.py` | Chạy baseline, Shrinkage LDA và SVM RBF. |
 | `train_dl.py` | Chạy Compact EEG CNN và EEG-Inception. |
