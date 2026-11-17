@@ -1,0 +1,47 @@
+# Cấu hình khởi đầu. Xác nhận kênh thực tế và chất lượng trước khi train.
+dataset:
+  id: ds004621
+  task: oddball
+  events:
+    standard: 5
+    target: 6
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  results_dir: results
+  splits_file: configs/splits.json
+
+preprocessing:
+  channels: all_eeg
+  reference: average_good_eeg
+  bandpass_hz: [0.5, 30.0]
+  filter_type: butterworth_iir
+  filter_order: 4
+  filter_direction: forward_backward
+  epoch_ms: [-200, 1000]
+  baseline_ms: [-200, 0]
+  model_input_ms: [0, 1000]
+  resample_hz: 128
+  reject_peak_to_peak_uv: 150.0
+  flat_peak_to_peak_uv: 0.1
+  ica_status: pending_quality_review
+
+split:
+  group: participant
+  train_fraction: 0.8
+
+features:
+  window_ms: 50
+
+training:
+  ml_models: [majority_baseline, shrinkage_lda, rbf_svm]
+  dl_models: [compact_eeg_cnn, eeg_inception]
+  optimizer: adamw
+  learning_rate: 0.001
+  batch_size: 64
+  epochs: 35
+
+evaluation:
+  labels: [standard, target]
+  metrics: [confusion_matrix, macro_f1]

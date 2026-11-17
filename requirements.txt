@@ -1,0 +1,9 @@
+# Thư viện dự kiến. Cố định phiên bản sau khi kiểm tra môi trường chạy.
+numpy
+mne
+scikit-learn
+torch
+braindecode
+matplotlib
+PyYAML
+reportlab
