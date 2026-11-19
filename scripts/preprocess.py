@@ -126,34 +126,50 @@ def clean_ica(raw, settings, rate, review, ica_path):
     }
 
 
-def preprocess(subject, raw_dir, output_dir, qa_dir, config, review):
+def preprocess(subject, raw_dir, output_dir, qa_dir, config, review, cleaned_dir=None):
     settings = config["preprocessing"]
     codes = config["dataset"]["events"]
     if set(codes) != {"standard", "target"} or len(set(codes.values())) != 2:
         raise ValueError("Expected distinct standard and target event codes.")
     stem = raw_dir / subject / "eeg" / f"{subject}_task-{config['dataset']['task']}"
-    raw = mne.io.read_raw_brainvision(f"{stem}_eeg.vhdr", preload=False)
-    sfreq = float(raw.info["sfreq"])
-    events, alignment = stimulus_events(raw, Path(f"{stem}_events.tsv"), codes)
-    raw.pick(mne.pick_types(raw.info, eeg=True, eog=True, exclude=[])).load_data()
-    eeg_names = [raw.ch_names[i] for i in mne.pick_types(raw.info, eeg=True, exclude=[])]
-    bad_channels = list(raw.info["bads"])
-    for name in eeg_names:
-        signal = raw.get_data(picks=[name])[0]
-        if not np.isfinite(signal).all() or np.ptp(signal) == 0:
-            bad_channels.append(name)
-    bad_channels = sorted(set(bad_channels))
-    if len(set(eeg_names) - set(bad_channels)) < 2:
-        raise ValueError("Fewer than two usable EEG channels.")
-    if bad_channels:
-        raw.drop_channels(bad_channels)
-    raw.set_eeg_reference("average")
-
-    low, high = settings["bandpass_hz"]
-    filter_eeg(raw, low, high, settings["filter_order"])
-    ica_info = clean_ica(raw, {**settings["ica"], "filter_order": settings["filter_order"]},
-                         settings["ica"]["fit_sfreq_hz"], review, qa_dir / f"{subject}-ica.fif")
-
+    if cleaned_dir is None:
+        raw = mne.io.read_raw_brainvision(f"{stem}_eeg.vhdr", preload=False)
+        sfreq = float(raw.info["sfreq"])
+        events, alignment = stimulus_events(raw, Path(f"{stem}_events.tsv"), codes)
+        raw.pick(mne.pick_types(raw.info, eeg=True, eog=True, exclude=[])).load_data()
+        eeg_names = [raw.ch_names[i] for i in mne.pick_types(raw.info, eeg=True, exclude=[])]
+        bad_channels = list(raw.info["bads"])
+        for name in eeg_names:
+            signal = raw.get_data(picks=[name])[0]
+            if not np.isfinite(signal).all() or np.ptp(signal) == 0:
+                bad_channels.append(name)
+        bad_channels = sorted(set(bad_channels))
+        if len(set(eeg_names) - set(bad_channels)) < 2:
+            raise ValueError("Fewer than two usable EEG channels.")
+        if bad_channels:
+            raw.drop_channels(bad_channels)
+        raw.set_eeg_reference("average")
+    
+        low, high = settings["bandpass_hz"]
+        filter_eeg(raw, low, high, settings["filter_order"])
+        ica_info = clean_ica(raw, {**settings["ica"], "filter_order": settings["filter_order"]},
+                             settings["ica"]["fit_sfreq_hz"], review, qa_dir / f"{subject}-ica.fif")
+    else:
+        folder = cleaned_dir / subject
+        cleaning = json.loads((folder / "cleaning.json").read_text("utf-8"))
+        source_qc = json.loads(Path(cleaning["qc_source"]).read_text("utf-8"))
+        if source_qc["configuration"]["preprocessing"] != settings:
+            raise ValueError("Saved ICA source settings differ from current preprocessing config.")
+        raw = mne.io.read_raw_fif(folder / f"{subject}-cleaned_raw.fif", preload=True)
+        if raw.ch_names != cleaning["channels"] or cleaning["subject"] != subject:
+            raise ValueError("Cleaned EEG identity/channel mismatch.")
+        sfreq = float(raw.info["sfreq"])
+        events, alignment = stimulus_events(raw, Path(f"{stem}_events.tsv"), codes)
+        eeg_names = [raw.ch_names[i] for i in mne.pick_types(raw.info, eeg=True, exclude=[])]
+        bad_channels = list(raw.info["bads"])
+        ica_info = dict(source_qc["ica"])
+        ica_info.update(status=cleaning["status"], excluded=cleaning["exclude"],
+                        reason=cleaning["reason"], cleaned_source=str(folder))
     rate = settings["resample_hz"]
     raw, resampled_events = raw.resample(rate, events=events, npad="auto")
     if len(np.unique(resampled_events[:, 0])) != len(events):
@@ -221,12 +237,16 @@ def main():
     parser.add_argument("--config", type=Path, default=REPO / "configs" / "experiment.yaml")
     parser.add_argument("--subjects", nargs="+", choices=SUBJECTS, metavar="sub-NN")
     parser.add_argument("--ica-review", type=Path, help="JSON mapping subjects to exclude lists and reasons.")
+    parser.add_argument("--cleaned-dir", type=Path, help="Read already-filtered ICA-cleaned FIF recordings.")
     args = parser.parse_args()
     config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     paths = config["paths"]
     raw_dir = REPO / paths["raw_dir"] / config["dataset"]["id"]
     output_dir = REPO / paths["processed_dir"]
     qa_dir = REPO / paths["results_dir"] / "quality" / "preprocessing"
+    if args.cleaned_dir is not None:
+        output_dir = output_dir / "after_ica"
+        qa_dir = qa_dir / "after_ica"
     qa_dir.mkdir(parents=True, exist_ok=True)
     reviews = json.loads(args.ica_review.read_text(encoding="utf-8")) if args.ica_review else {}
     subjects = sorted(set(args.subjects or SUBJECTS))
@@ -235,7 +255,7 @@ def main():
     for subject in subjects:
         print(f"\nPreprocessing {subject}", flush=True)
         try:
-            reports[subject] = preprocess(subject, raw_dir, output_dir, qa_dir, config, reviews.get(subject))
+            reports[subject] = preprocess(subject, raw_dir, output_dir, qa_dir, config, reviews.get(subject), args.cleaned_dir)
         except (OSError, ValueError, RuntimeError) as error:
             errors[subject] = str(error)
             print(f"{subject} failed: {error}", flush=True)
