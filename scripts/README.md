@@ -54,3 +54,13 @@ Bỏ `--subjects` để chạy đủ 42 người. `summary_all.json` ghi kết q
 | `run_pipeline.py` | Điều phối các bước với cùng config và cách chia người. |
 
 Trình tự thực hiện được ghi trong [kế hoạch](../docs/eeg-oddball-ke-hoach-trien-khai.md).
+
+## Thử 16 kênh sau ICA
+
+Chạy cấu hình riêng để fit ICA trên toàn bộ kênh khả dụng rồi chọn 16 kênh trước khi kiểm tra ngưỡng. Kết quả ở data/processed/channels16/ và results/channels16/quality/preprocessing/.
+
+```bash
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/preprocess.py --config configs/experiment_16ch.yaml --subjects sub-01 --ica-review /path/to/ica_review.json
+```
+
+Dùng lại quyết định ICA đã duyệt cho từng người, cùng cấu hình fit và phiên bản thư viện. Với sub-01, thành phần 0 đã được duyệt là nhiễu mắt. Bỏ --subjects để chạy cả bộ. Khi thiếu kênh đã chọn, script báo lỗi theo người. Mặc định experiment.yaml vẫn dùng all_eeg.

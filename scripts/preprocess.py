@@ -160,7 +160,17 @@ def preprocess(subject, raw_dir, output_dir, qa_dir, config, review):
         raise ValueError("Two candidate stimuli share a sample after resampling.")
     bounds = {key: tuple(value / 1000 for value in settings[key])
               for key in ("epoch_ms", "baseline_ms", "model_input_ms")}
-    eeg_picks = mne.pick_types(raw.info, eeg=True, exclude="bads")
+    selected = settings["channels"]
+    if selected == "all_eeg":
+        eeg_picks = mne.pick_types(raw.info, eeg=True, exclude="bads")
+    else:
+        if not isinstance(selected, list) or not selected or len(set(selected)) != len(selected):
+            raise ValueError("channels must be all_eeg or a nonempty list of unique channel names.")
+        available = {raw.ch_names[i] for i in mne.pick_types(raw.info, eeg=True, exclude="bads")}
+        missing = sorted(set(selected) - available)
+        if missing:
+            raise ValueError(f"Requested EEG channels unavailable after cleaning: {missing}")
+        eeg_picks = [raw.ch_names.index(name) for name in selected]
     epochs = mne.Epochs(
         raw, resampled_events, event_id=codes, tmin=bounds["epoch_ms"][0],
         tmax=bounds["epoch_ms"][1], baseline=bounds["baseline_ms"],
@@ -178,6 +188,9 @@ def preprocess(subject, raw_dir, output_dir, qa_dir, config, review):
     summary = {
         "subject": subject, "raw_sfreq_hz": sfreq, "output_sfreq_hz": rate,
         "recorded_eeg_channels": len(eeg_names), "output_channels": epochs.ch_names,
+        "ica_input_channels": list(raw.ch_names),
+        "rejection_channels": list(epochs.ch_names),
+        "configuration": config,
         "bad_channels": bad_channels, "event_alignment": alignment, "ica": ica_info,
         "class_counts": {label: {"before": alignment[label]["count"],
                                  "kept": kept[code],
