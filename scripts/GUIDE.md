@@ -11,6 +11,7 @@
 | `train_ml.py` | Huấn luyện baseline, Shrinkage LDA và SVM RBF; lưu macro-F1 và confusion matrix. |
 | `train_dl.py` | Huấn luyện Compact EEG CNN và EEG-Inception; lưu checkpoint, lịch sử epoch và kết quả test. |
 | `visualize.py` | Vẽ kết quả mô hình, đường học, ERP Pz, phân bố đặc trưng và độ nhạy khi che tín hiệu. |
+| `analyze_responses.py` | Ghép mốc kích thích với lần bấm nút, thống kê thời gian phản ứng trên nhóm train để khảo sát thông tin muộn. |
 | `cleanup_intermediate.py` | Kiểm tra và dọn các file trung gian đã được thay thế hoặc xác nhận trùng. |
 
 Thứ tự và lệnh chạy được trình bày trong [README chính](../README.md).

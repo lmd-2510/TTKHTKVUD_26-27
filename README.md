@@ -171,3 +171,14 @@ Giữ code, config, split, kết quả nhỏ và bằng chứng báo cáo trong 
 `cleanup_intermediate.py` kiểm tra bộ mẫu cuối và liệt kê file trung gian có thể dọn. `--apply` thực hiện xóa theo danh sách đã kiểm tra. Xem [hướng dẫn từng script](scripts/GUIDE.md) trước khi dùng.
 
 Các PDF tổng hiện được biên soạn từ bản thảo và kiểm tra bố cục riêng. `build_data_report.py` chỉ tạo PDF kiểm kê tải dữ liệu.
+
+
+## Phân tích bổ sung về thời gian phản ứng
+
+Để khảo sát vì sao EEG-Inception nhạy với khoảng 700–800 ms, trước hết kiểm kê độ trễ từ target đến sự kiện bấm nút S1 trên nhóm train.
+
+```bash
+python scripts/analyze_responses.py
+```
+
+Kết quả ở results/analysis/response_timing/ gồm summary.json, trials.csv và target_response_times.png. Script đọc bảng sự kiện gốc, chưa giới hạn vào những epoch đã giữ. Quy tắc ghép lấy S1 đầu tiên từ 100 ms đến trước 1.000 ms và trước kích thích kế tiếp. Đây là phép kiểm kê theo thời gian; cần kiểm tra tính phù hợp của quy tắc trước khi liên hệ với dự đoán mô hình.
