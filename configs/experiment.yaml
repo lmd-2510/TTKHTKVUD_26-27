@@ -44,7 +44,7 @@ training:
   optimizer: adamw
   learning_rate: 0.001
   batch_size: 64
-  epochs: 35
+  epochs: 100
 
 evaluation:
   labels: [standard, target]

@@ -99,8 +99,8 @@ def main():
     parser.add_argument("--splits", type=Path, default=REPO / "configs/splits.json")
     parser.add_argument("--models", nargs="+", choices=["compact_eeg_cnn", "eeg_inception"],
                         default=["compact_eeg_cnn", "eeg_inception"])
-    parser.add_argument("--epochs", type=int, default=35)
-    parser.add_argument("--patience", type=int, default=8)
+    parser.add_argument("--epochs", type=int, default=100)
+    parser.add_argument("--patience", type=int, default=0, help="Early stopping patience; 0 runs all epochs.")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--learning-rate", type=float, default=0.001)
     parser.add_argument("--weight-decay", type=float, default=0.01)
@@ -109,8 +109,8 @@ def main():
     parser.add_argument("--output-dir", type=Path, default=REPO / "results/metrics/dl")
     parser.add_argument("--checkpoint-dir", type=Path, default=REPO / "results/checkpoints/dl")
     args = parser.parse_args()
-    if min(args.epochs, args.patience, args.batch_size) < 1 or args.learning_rate <= 0:
-        parser.error("Epochs, patience, batch size and learning rate must be positive.")
+    if min(args.epochs, args.batch_size) < 1 or args.patience < 0 or args.learning_rate <= 0:
+        parser.error("Epochs, batch size and learning rate must be positive; patience must be nonnegative.")
     if args.device == "cuda" and not torch.cuda.is_available():
         parser.error("CUDA is unavailable in this venv. Check PyTorch/GPU or use --device cpu.")
     split = load_split(args.splits)
@@ -193,7 +193,7 @@ def main():
                 stale += 1
             save_json(args.output_dir / f"{name}_history.json", history)
             print(f"{name} epoch {epoch}: loss={history[-1]['train_loss']:.4f}, val macro-F1={score:.4f}", flush=True)
-            if stale >= args.patience:
+            if args.patience > 0 and stale >= args.patience:
                 break
         model.load_state_dict(best_state)
         predicted = predict(model, test_loader, device)
