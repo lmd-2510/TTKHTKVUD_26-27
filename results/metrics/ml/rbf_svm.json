@@ -1,0 +1,73 @@
+{
+  "model": "rbf_svm",
+  "macro_f1": 0.7578364012374165,
+  "confusion_matrix": [
+    [
+      3690,
+      206
+    ],
+    [
+      294,
+      344
+    ]
+  ],
+  "matrix_rows": "true",
+  "matrix_columns": "predicted",
+  "label_order": [
+    "standard",
+    "target"
+  ],
+  "train_participants": [
+    "sub-01",
+    "sub-03",
+    "sub-04",
+    "sub-05",
+    "sub-06",
+    "sub-10",
+    "sub-11",
+    "sub-12",
+    "sub-13",
+    "sub-14",
+    "sub-17",
+    "sub-19",
+    "sub-20",
+    "sub-21",
+    "sub-22",
+    "sub-23",
+    "sub-24",
+    "sub-25",
+    "sub-26",
+    "sub-27",
+    "sub-28",
+    "sub-29",
+    "sub-30",
+    "sub-31",
+    "sub-32",
+    "sub-33",
+    "sub-34",
+    "sub-35",
+    "sub-36",
+    "sub-37",
+    "sub-38",
+    "sub-39",
+    "sub-40",
+    "sub-42"
+  ],
+  "test_participants": [
+    "sub-02",
+    "sub-07",
+    "sub-08",
+    "sub-09",
+    "sub-15",
+    "sub-16",
+    "sub-18",
+    "sub-41"
+  ],
+  "train_samples": 19692,
+  "test_samples": 4534,
+  "feature_count": 320,
+  "elapsed_seconds": 31.57336794497678,
+  "sklearn_version": "1.9.1",
+  "parameters": "Pipeline(steps=[('standardscaler', StandardScaler()),\n                ('svc', SVC(cache_size=1024, class_weight='balanced'))])",
+  "selection": "Fixed initial parameters; no tuning on held-out test participants."
+}
