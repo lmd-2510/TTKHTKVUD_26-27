@@ -1,0 +1,478 @@
+{
+  "participants": [
+    "sub-01",
+    "sub-03",
+    "sub-04",
+    "sub-05",
+    "sub-06",
+    "sub-10",
+    "sub-11",
+    "sub-12",
+    "sub-13",
+    "sub-14",
+    "sub-17",
+    "sub-19",
+    "sub-20",
+    "sub-21",
+    "sub-22",
+    "sub-23",
+    "sub-24",
+    "sub-25",
+    "sub-26",
+    "sub-27",
+    "sub-28",
+    "sub-29",
+    "sub-30",
+    "sub-31",
+    "sub-32",
+    "sub-33",
+    "sub-34",
+    "sub-35",
+    "sub-36",
+    "sub-37",
+    "sub-38",
+    "sub-39",
+    "sub-40",
+    "sub-42"
+  ],
+  "scope": "training participants only; raw event rows before epoch rejection",
+  "matching_rule": "First S1 from 100 ms up to but excluding 1000 ms after stimulus, before the next S5/S6/S7.",
+  "caveat": "Temporal association is not proof of correct task execution or a motor origin of model features.",
+  "target_stimuli": 2774,
+  "targets_with_eligible_response": 2648,
+  "targets_without_eligible_response": 126,
+  "target_rt_ms": {
+    "q25": 448.99999999999454,
+    "median": 512.0000000000005,
+    "q75": 583.9999999999606
+  },
+  "target_responses_700_to_800_ms": 126,
+  "per_participant": {
+    "sub-01": {
+      "unassigned_S1_events": 9,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 29,
+        "target": 61,
+        "standard": 8
+      }
+    },
+    "sub-03": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 10,
+        "standard": 1
+      }
+    },
+    "sub-04": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 79,
+        "distractor": 5
+      }
+    },
+    "sub-05": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 8
+      }
+    },
+    "sub-06": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 78,
+        "distractor": 3,
+        "standard": 1
+      }
+    },
+    "sub-10": {
+      "unassigned_S1_events": 5,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 67,
+        "distractor": 29,
+        "standard": 3
+      }
+    },
+    "sub-11": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 1
+      }
+    },
+    "sub-12": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 5,
+        "target": 80,
+        "standard": 1
+      }
+    },
+    "sub-13": {
+      "unassigned_S1_events": 1,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 80,
+        "distractor": 5,
+        "standard": 1
+      }
+    },
+    "sub-14": {
+      "unassigned_S1_events": 1,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 78,
+        "standard": 8
+      }
+    },
+    "sub-17": {
+      "unassigned_S1_events": 2,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 61,
+        "target": 80,
+        "standard": 10
+      }
+    },
+    "sub-19": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 75,
+        "distractor": 2
+      }
+    },
+    "sub-20": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 80,
+        "distractor": 3
+      }
+    },
+    "sub-21": {
+      "unassigned_S1_events": 2,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 77,
+        "distractor": 1
+      }
+    },
+    "sub-22": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 1
+      }
+    },
+    "sub-23": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 517,
+        "distractor": 89,
+        "target": 86
+      },
+      "stimuli_with_eligible_response": {
+        "target": 82,
+        "distractor": 6
+      }
+    },
+    "sub-24": {
+      "unassigned_S1_events": 3,
+      "stimuli": {
+        "standard": 497,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 74,
+        "distractor": 12
+      }
+    },
+    "sub-25": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "target": 81,
+        "standard": 498,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 63,
+        "distractor": 6
+      }
+    },
+    "sub-26": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 77,
+        "distractor": 6,
+        "standard": 1
+      }
+    },
+    "sub-27": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 3,
+        "target": 81
+      }
+    },
+    "sub-28": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "standard": 2,
+        "distractor": 1
+      }
+    },
+    "sub-29": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 72,
+        "distractor": 20,
+        "standard": 2
+      }
+    },
+    "sub-30": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 1,
+        "target": 68
+      }
+    },
+    "sub-31": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "target": 81,
+        "standard": 498,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 79,
+        "distractor": 8,
+        "standard": 1
+      }
+    },
+    "sub-32": {
+      "unassigned_S1_events": 3,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 4,
+        "target": 77
+      }
+    },
+    "sub-33": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 5,
+        "standard": 1
+      }
+    },
+    "sub-34": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "distractor": 81,
+        "standard": 498,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 79,
+        "distractor": 7,
+        "standard": 1
+      }
+    },
+    "sub-35": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 80,
+        "distractor": 15,
+        "standard": 1
+      }
+    },
+    "sub-36": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 79,
+        "distractor": 1,
+        "standard": 1
+      }
+    },
+    "sub-37": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 497,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 75,
+        "distractor": 8
+      }
+    },
+    "sub-38": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "distractor": 96,
+        "standard": 583,
+        "target": 96
+      },
+      "stimuli_with_eligible_response": {
+        "target": 96,
+        "distractor": 8,
+        "standard": 1
+      }
+    },
+    "sub-39": {
+      "unassigned_S1_events": 2,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 81,
+        "distractor": 2
+      }
+    },
+    "sub-40": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "distractor": 81,
+        "target": 81
+      },
+      "stimuli_with_eligible_response": {
+        "distractor": 12,
+        "target": 81,
+        "standard": 5
+      }
+    },
+    "sub-42": {
+      "unassigned_S1_events": 0,
+      "stimuli": {
+        "standard": 498,
+        "target": 81,
+        "distractor": 81
+      },
+      "stimuli_with_eligible_response": {
+        "target": 80,
+        "distractor": 4
+      }
+    }
+  }
+}
