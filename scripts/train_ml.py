@@ -22,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--splits", type=Path, default=REPO / "configs/splits.json")
     parser.add_argument("--features", type=Path, default=REPO / "data/processed/channels16/features50ms.npz")
-    parser.add_argument("--output-dir", type=Path, default=REPO / "results/channels16/metrics/ml")
+    parser.add_argument("--output-dir", type=Path, default=REPO / "results/metrics/ml")
     parser.add_argument("--models", nargs="+", choices=["majority_baseline", "shrinkage_lda", "rbf_svm"],
                         default=["majority_baseline", "shrinkage_lda", "rbf_svm"])
     args = parser.parse_args()

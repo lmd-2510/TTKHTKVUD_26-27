@@ -1,8 +1,10 @@
-# Thư viện dự kiến. Cố định phiên bản sau khi kiểm tra môi trường chạy.
+# Phiên bản xác nhận từ kết quả chạy trên server.
+# Bản PyTorch của thí nghiệm là 2.15.0+cu132.
+# Các thư viện chưa có số phiên bản cần đối chiếu venv server.
 numpy
 mne
-scikit-learn
-torch
+scikit-learn==1.9.1
+torch==2.15.0
 braindecode
 matplotlib
 PyYAML

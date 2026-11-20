@@ -1,4 +1,4 @@
-# Cấu hình khởi đầu. Xác nhận kênh thực tế và chất lượng trước khi train.
+# Cấu hình thử toàn bộ kênh EEG. Kết quả 16 kênh dùng experiment_16ch.yaml.
 dataset:
   id: ds004621
   task: oddball

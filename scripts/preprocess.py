@@ -14,6 +14,25 @@ import yaml
 from download_data import REPO, SUBJECTS, atomic_output, read_tsv
 
 
+def resolve_report_path(path):
+    """Locate reports whose historical logs still contain the earlier directory name."""
+    path = Path(path)
+    updated = Path(str(path).replace("\\", "/").replace(
+        "/quality/preprocessing", "/preprocessing_reports"))
+    evidence = Path(updated.as_posix().replace(
+        "/results/preprocessing_reports", "/results/preprocessing_evidence"))
+    candidates = [evidence, updated, path]
+    # Server logs can contain an absolute path from a different checkout.
+    for candidate in (evidence, updated):
+        parts = candidate.parts
+        if "results" in parts:
+            candidates.append(REPO.joinpath(*parts[parts.index("results"):]))
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(f"Preprocessing report not found: {path}")
+
+
 def write_json(path, data):
     with atomic_output(path) as output:
         output.write((json.dumps(data, indent=2, allow_nan=False) + "\n").encode("utf-8"))
@@ -157,7 +176,7 @@ def preprocess(subject, raw_dir, output_dir, qa_dir, config, review, cleaned_dir
     else:
         folder = cleaned_dir / subject
         cleaning = json.loads((folder / "cleaning.json").read_text("utf-8"))
-        source_qc = json.loads(Path(cleaning["qc_source"]).read_text("utf-8"))
+        source_qc = json.loads(resolve_report_path(cleaning["qc_source"]).read_text("utf-8"))
         if source_qc["configuration"]["preprocessing"] != settings:
             raise ValueError("Saved ICA source settings differ from current preprocessing config.")
         raw = mne.io.read_raw_fif(folder / f"{subject}-cleaned_raw.fif", preload=True)
@@ -243,7 +262,7 @@ def main():
     paths = config["paths"]
     raw_dir = REPO / paths["raw_dir"] / config["dataset"]["id"]
     output_dir = REPO / paths["processed_dir"]
-    qa_dir = REPO / paths["results_dir"] / "quality" / "preprocessing"
+    qa_dir = REPO / paths["results_dir"] / "preprocessing_reports"
     if args.cleaned_dir is not None:
         output_dir = output_dir / "after_ica"
         qa_dir = qa_dir / "after_ica"

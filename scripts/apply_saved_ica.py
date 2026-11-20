@@ -11,7 +11,7 @@ import mne
 import numpy as np
 
 from download_data import REPO, SUBJECTS
-from preprocess import filter_eeg, write_json
+from preprocess import filter_eeg, write_json, resolve_report_path
 
 
 def choose_components(info, threshold):
@@ -34,6 +34,7 @@ def choose_components(info, threshold):
 
 
 def process(subject, qc_dir, output_dir, threshold):
+    qc_dir = resolve_report_path(qc_dir)
     qc_path = qc_dir / f"{subject}.json"
     qc = json.loads(qc_path.read_text("utf-8"))
     cfg = qc["configuration"]
@@ -109,7 +110,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--subjects", nargs="+", choices=SUBJECTS)
     parser.add_argument("--qc-dir", type=Path,
-                        default=REPO / "results/channels16/quality/preprocessing")
+                        default=REPO / "results/channels16/preprocessing_reports")
     parser.add_argument("--output-dir", type=Path, default=REPO / "data/processed/ica_cleaned")
     parser.add_argument("--threshold", type=float, default=0.9)
     args = parser.parse_args()
