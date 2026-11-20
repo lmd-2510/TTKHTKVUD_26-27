@@ -64,3 +64,21 @@ OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/prepro
 ```
 
 Dùng lại quyết định ICA đã duyệt cho từng người, cùng cấu hình fit và phiên bản thư viện. Với sub-01, thành phần 0 đã được duyệt là nhiễu mắt. Bỏ --subjects để chạy cả bộ. Khi thiếu kênh đã chọn, script báo lỗi theo người. Mặc định experiment.yaml vẫn dùng all_eeg.
+
+
+## Classical ML on the server
+
+Run from the repository root with the project venv active.
+
+```bash
+python scripts/extract_features.py
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/train_ml.py
+```
+
+The extractor reads participant NPZ paths from configs/splits.json. Each channel contributes 20 means over consecutive 50 ms windows between 0 and 1000 ms. The last bin includes the endpoint at 1000 ms. At 128 Hz, bins contain different numbers of samples, so assignment uses the saved timestamps. Flattening uses channel-major order. Values are converted from volts to microvolts. Output is data/processed/channels16/features50ms.npz with participant identities and a SHA-256 of the split file.
+
+The three initial models are a majority baseline, LDA with automatic covariance shrinkage and equal class priors, and an RBF SVM with C=1, gamma=scale and balanced class weights. LDA/SVM use a StandardScaler fitted on training participants only. Hyperparameters are fixed for this first run. If tuning is added later, participant-level validation inside the 34 training participants is required.
+
+Each model writes macro-F1 and a 2x2 confusion matrix to results/channels16/metrics/ml/<model>.json. Matrix rows are true labels, columns are predicted labels, ordered standard then target. Per-model progress and metrics are printed during execution. These runs use CPU.
+
+Optional --models selects a subset, for example --models majority_baseline shrinkage_lda. Training and extraction must be run on the server. Feature extraction and command-line parsing have been checked locally with synthetic arrays; real-data training is pending.
