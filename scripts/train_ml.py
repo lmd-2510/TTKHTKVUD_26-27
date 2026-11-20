@@ -18,6 +18,17 @@ from download_data import REPO, atomic_output
 from extract_features import load_split
 
 
+def make_models():
+    """Construct the fixed ML estimators used in the initial experiment."""
+    return {
+        "majority_baseline": DummyClassifier(strategy="most_frequent"),
+        "shrinkage_lda": make_pipeline(
+            StandardScaler(), LinearDiscriminantAnalysis(solver="lsqr", shrinkage="auto", priors=[0.5, 0.5])),
+        "rbf_svm": make_pipeline(
+            StandardScaler(), SVC(kernel="rbf", C=1.0, gamma="scale", class_weight="balanced", cache_size=1024)),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--splits", type=Path, default=REPO / "configs/splits.json")
@@ -39,13 +50,7 @@ def main():
     test = np.isin(groups, split["test"])
     if (train & test).any() or set(np.unique(y[train])) != {0, 1} or set(np.unique(y[test])) != {0, 1}:
         raise ValueError("Invalid train/test data.")
-    models = {
-        "majority_baseline": DummyClassifier(strategy="most_frequent"),
-        "shrinkage_lda": make_pipeline(
-            StandardScaler(), LinearDiscriminantAnalysis(solver="lsqr", shrinkage="auto", priors=[0.5, 0.5])),
-        "rbf_svm": make_pipeline(
-            StandardScaler(), SVC(kernel="rbf", C=1.0, gamma="scale", class_weight="balanced", cache_size=1024)),
-    }
+    models = make_models()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for name in dict.fromkeys(args.models):
         started = time.monotonic()

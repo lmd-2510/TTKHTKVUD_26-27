@@ -182,3 +182,12 @@ python scripts/analyze_responses.py
 ```
 
 Kết quả ở results/analysis/response_timing/ gồm summary.json, trials.csv và target_response_times.png. Script đọc bảng sự kiện gốc, chưa giới hạn vào những epoch đã giữ. Quy tắc ghép lấy S1 đầu tiên từ 100 ms đến trước 1.000 ms và trước kích thích kế tiếp. Đây là phép kiểm kê theo thời gian; cần kiểm tra tính phù hợp của quy tắc trước khi liên hệ với dự đoán mô hình.
+
+
+Sau khi kiểm tra kiểm kê thời gian phản ứng, so sánh mô hình trên các lượt validation đã giữ bằng lệnh sau.
+
+```bash
+python scripts/analyze_model_responses.py
+```
+
+Đầu ra ở results/analysis/response_models/ gồm summary.json, predictions.csv và hình target_recall_by_response_time.png/PDF. Script dùng mốc mẫu sự kiện gốc để ghép đúng epoch. Ngưỡng nhóm nhanh/giữa/chậm lấy từ phân vị 25/75 của target có phản ứng trong 30 người fit. Bốn người validation được lấy từ checkpoint DL. LDA, SVM và baseline được fit lại trên cùng 30 người cho phân tích này; DL dùng lại checkpoint. Chỉ số theo nhóm target là recall, do mỗi nhóm chỉ gồm target. Phân tích có tính mô tả vì validation đã được dùng để chọn checkpoint và thành phần người trong các nhóm có thể khác nhau.
