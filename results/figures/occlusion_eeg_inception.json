@@ -1,0 +1,89 @@
+{
+  "model": "eeg_inception",
+  "baseline_macro_f1": 0.8439566614393987,
+  "test_participants": [
+    "sub-02",
+    "sub-07",
+    "sub-08",
+    "sub-09",
+    "sub-15",
+    "sub-16",
+    "sub-18",
+    "sub-41"
+  ],
+  "mask_value": "0 after normalization, equal to fitting-channel mean before normalization",
+  "interpretation": "Perturbation sensitivity; not a causal brain localization.",
+  "window_ms": 100,
+  "windows": [
+    {
+      "start_ms": 0,
+      "end_ms": 100,
+      "macro_f1": 0.8422299386664522,
+      "macro_f1_drop": 0.0017267227729464985,
+      "mean_true_class_probability_drop": -0.004370430484414101
+    },
+    {
+      "start_ms": 100,
+      "end_ms": 200,
+      "macro_f1": 0.8435008194010291,
+      "macro_f1_drop": 0.0004558420383696804,
+      "mean_true_class_probability_drop": -0.0077986447140574455
+    },
+    {
+      "start_ms": 200,
+      "end_ms": 300,
+      "macro_f1": 0.8298872842429423,
+      "macro_f1_drop": 0.0140693771964564,
+      "mean_true_class_probability_drop": 0.004465470090508461
+    },
+    {
+      "start_ms": 300,
+      "end_ms": 400,
+      "macro_f1": 0.8162033532112756,
+      "macro_f1_drop": 0.027753308228123164,
+      "mean_true_class_probability_drop": 0.0063119628466665745
+    },
+    {
+      "start_ms": 400,
+      "end_ms": 500,
+      "macro_f1": 0.8235466981821417,
+      "macro_f1_drop": 0.02040996325725708,
+      "mean_true_class_probability_drop": 0.008745934814214706
+    },
+    {
+      "start_ms": 500,
+      "end_ms": 600,
+      "macro_f1": 0.8285164151905697,
+      "macro_f1_drop": 0.015440246248829004,
+      "mean_true_class_probability_drop": 0.0145869180560112
+    },
+    {
+      "start_ms": 600,
+      "end_ms": 700,
+      "macro_f1": 0.8140812728092837,
+      "macro_f1_drop": 0.029875388630115074,
+      "mean_true_class_probability_drop": 0.028090568259358406
+    },
+    {
+      "start_ms": 700,
+      "end_ms": 800,
+      "macro_f1": 0.8116906962231885,
+      "macro_f1_drop": 0.03226596521621028,
+      "mean_true_class_probability_drop": 0.029270345345139503
+    },
+    {
+      "start_ms": 800,
+      "end_ms": 900,
+      "macro_f1": 0.8220839279952795,
+      "macro_f1_drop": 0.02187273344411922,
+      "mean_true_class_probability_drop": 0.017228707671165466
+    },
+    {
+      "start_ms": 900,
+      "end_ms": 1000,
+      "macro_f1": 0.8391586171412213,
+      "macro_f1_drop": 0.0047980442981774285,
+      "mean_true_class_probability_drop": 0.0057784803211688995
+    }
+  ]
+}
