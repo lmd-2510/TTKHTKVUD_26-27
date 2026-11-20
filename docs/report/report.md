@@ -113,6 +113,26 @@ A fixed shuffle with seed 42 assigned 34 participants to training and 8 to testi
 
 The test participants are sub-02, sub-07, sub-08, sub-09, sub-15, sub-16, sub-18 and sub-41. Validation is currently empty. Model selection and early stopping will use participant-level validation within the training participants when required. Test results will be used for the final evaluation. The processing quality statuses remain attached to the participant reports.
 
+## Classical Machine Learning
+
+### Feature extraction and initial models
+
+For each of 16 channels, the baseline-corrected 0–1000 ms signal was averaged over 20 consecutive 50 ms windows, producing 320 features per trial in channel-major order. The final window included the sample at 1000 ms. Timestamps defined window membership because 50 ms does not correspond to an integer number of samples at 128 Hz. Amplitudes were converted to microvolts.
+
+We evaluated a majority-class baseline, LDA with automatic covariance shrinkage and equal class priors, and an RBF SVM with C=1, gamma=scale and balanced class weights. Standardization for LDA and SVM was fitted on training participants only. Initial parameters were fixed before test evaluation. All models used 19,692 training trials from 34 participants and 4,534 test trials from the same eight held-out participants.
+
+### Initial held-out results
+
+| Model | Macro-F1 | Standard correctly classified | Standard predicted target | Target predicted standard | Target correctly classified |
+|---|---:|---:|---:|---:|---:|
+| Majority baseline | 0.4622 | 3,896 | 0 | 638 | 0 |
+| Shrinkage LDA | 0.7103 | 3,258 | 638 | 176 | 462 |
+| RBF SVM | 0.7578 | 3,690 | 206 | 294 | 344 |
+
+Confusion matrices use true labels as rows and predicted labels as columns, with standard followed by target. SVM achieved the highest macro-F1 of the initial models. LDA detected 462 of 638 targets (72.4%), while SVM detected 344 (53.9%). SVM generated fewer false target predictions, 206 compared with 638 for LDA. These results show different error tradeoffs. The majority baseline missed every target, illustrating the importance of class-sensitive evaluation.
+
+The comparison concerns these initial configurations and this participant split. Subsequent hyperparameter selection should use participant-level validation inside the training set. The elapsed times recorded in the supplied JSON files include fitting and prediction and depend on the execution environment.
+
 ## References
 
 1. Dzianok P, Antonova I, Wojciechowski J, Dreszer J, Kublik E. The Nencki-Symfonia electroencephalography/event-related potential dataset. *GigaScience*. 2022. [doi:10.1093/gigascience/giac015](https://doi.org/10.1093/gigascience/giac015).
