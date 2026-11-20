@@ -82,3 +82,23 @@ The three initial models are a majority baseline, LDA with automatic covariance 
 Each model writes macro-F1 and a 2x2 confusion matrix to results/channels16/metrics/ml/<model>.json. Matrix rows are true labels, columns are predicted labels, ordered standard then target. Per-model progress and metrics are printed during execution. These runs use CPU.
 
 Optional --models selects a subset, for example --models majority_baseline shrinkage_lda. Training and extraction must be run on the server. Feature extraction and command-line parsing have been checked locally with synthetic arrays; real-data training is pending.
+
+
+## Deep learning on the server
+
+```bash
+python -c "import torch; print('CUDA:', torch.cuda.is_available())"
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/train_dl.py
+```
+
+Both networks read participant EEG NPZ files referenced in configs/splits.json, directly using 16 channels and 129 time points. No 50 ms feature extraction is used for DL. Compact EEG CNN is the project's small temporal/spatial/separable CNN implementation inspired by compact EEG architectures. EEG-Inception uses Braindecode EEGInceptionERP with n_chans=16, n_outputs=2, n_times=129 and sfreq=128. These are separate architectures.
+
+With seed 42, four participants from the original 34 training participants form validation, leaving 30 fitting participants. The original eight test participants remain the test set. Per-channel mean/std and inverse-frequency class weights are calculated on fitting participants only. AdamW defaults are learning rate 0.001, weight decay 0.01, batch size 64 and maximum 35 epochs. Early stopping waits eight epochs without improved validation macro-F1. The best validation checkpoint is evaluated on test.
+
+Results are results/metrics/dl/<model>.json, epoch histories are <model>_history.json, and checkpoints are results/checkpoints/dl/<model>.pt. Checkpoints include channel order, normalization values and participant assignments. Model runs are sequential. --models compact_eeg_cnn or --models eeg_inception runs one network. --device cpu explicitly enables CPU execution when desired. The default requires CUDA. Successful fitting and CUDA compatibility must be checked on the server.
+
+ML used all 34 training participants while DL holds four out for validation and fits 30. State this distinction when reporting the initial comparison. Hyperparameter decisions use validation. Test metrics describe the final selected checkpoints.
+
+References:
+- https://braindecode.org/stable/generated/braindecode.models.EEGInceptionERP.html
+- https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
