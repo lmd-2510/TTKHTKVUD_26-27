@@ -1,0 +1,6 @@
+{
+  "sub-01": {
+    "exclude": [0],
+    "reason": "Reviewed component 0: blink-like deflections synchronized with Fp1 and Fp2."
+  }
+}

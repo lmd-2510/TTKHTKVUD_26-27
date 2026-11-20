@@ -1,0 +1,405 @@
+{
+  "subject": "sub-34",
+  "raw_sfreq_hz": 1000.0,
+  "output_sfreq_hz": 128,
+  "recorded_eeg_channels": 127,
+  "output_channels": [
+    "F3",
+    "Fz",
+    "F4",
+    "T7",
+    "C3",
+    "Cz",
+    "C4",
+    "T8",
+    "CP3",
+    "CP4",
+    "P3",
+    "Pz",
+    "P4",
+    "PO7",
+    "PO8",
+    "Oz"
+  ],
+  "ica_input_channels": [
+    "Fp1",
+    "Fz",
+    "F3",
+    "F7",
+    "FT9",
+    "FC5",
+    "FC1",
+    "C3",
+    "T7",
+    "TP9 LEFT EAR",
+    "CP5",
+    "CP1",
+    "Pz",
+    "P3",
+    "P7",
+    "O1",
+    "Oz",
+    "O2",
+    "P4",
+    "P8",
+    "TP10 RIGHT EAR",
+    "CP6",
+    "CP2",
+    "Cz",
+    "C4",
+    "T8",
+    "FT10",
+    "FC6",
+    "FC2",
+    "F4",
+    "F8",
+    "Fp2",
+    "AF7",
+    "AF3",
+    "AFz",
+    "F1",
+    "F5",
+    "FT7",
+    "FC3",
+    "C1",
+    "C5",
+    "TP7",
+    "CP3",
+    "P1",
+    "P5",
+    "PO7",
+    "PO3",
+    "POz",
+    "PO4",
+    "PO8",
+    "P6",
+    "P2",
+    "CPz",
+    "CP4",
+    "TP8",
+    "C6",
+    "C2",
+    "FC4",
+    "FT8",
+    "F6",
+    "AF8",
+    "AF4",
+    "F2",
+    "F9",
+    "AFF1h",
+    "FFC1h",
+    "FFC5h",
+    "FTT7h",
+    "FCC3h",
+    "CCP1h",
+    "CCP5h",
+    "TPP7h",
+    "P9",
+    "PPO9h",
+    "PO9",
+    "O9",
+    "OI1h",
+    "PPO1h",
+    "CPP3h",
+    "CPP4h",
+    "PPO2h",
+    "OI2h",
+    "O10",
+    "PO10",
+    "PPO10h",
+    "P10",
+    "TPP8h",
+    "CCP6h",
+    "CCP2h",
+    "FCC4h",
+    "FTT8h",
+    "FFC6h",
+    "FFC2h",
+    "AFF2h",
+    "F10",
+    "AFp1",
+    "AFF5h",
+    "FFT9h",
+    "FFT7h",
+    "FFC3h",
+    "FCC1h",
+    "FCC5h",
+    "FTT9h",
+    "TTP7h",
+    "CCP3h",
+    "CPP1h",
+    "CPP5h",
+    "TPP9h",
+    "POO9h",
+    "PPO5h",
+    "POO1",
+    "POO2",
+    "PPO6h",
+    "POO10h",
+    "TPP10h",
+    "CPP6h",
+    "CPP2h",
+    "CCP4h",
+    "TTP8h",
+    "FTT10h",
+    "FCC6h",
+    "FCC2h",
+    "FFC4h",
+    "FFT8h",
+    "FFT10h",
+    "AFF6h",
+    "AFp2"
+  ],
+  "rejection_channels": [
+    "F3",
+    "Fz",
+    "F4",
+    "T7",
+    "C3",
+    "Cz",
+    "C4",
+    "T8",
+    "CP3",
+    "CP4",
+    "P3",
+    "Pz",
+    "P4",
+    "PO7",
+    "PO8",
+    "Oz"
+  ],
+  "configuration": {
+    "dataset": {
+      "id": "ds004621",
+      "task": "oddball",
+      "events": {
+        "standard": 5,
+        "target": 6
+      }
+    },
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed/channels16",
+      "results_dir": "results/channels16",
+      "splits_file": "configs/splits.json"
+    },
+    "preprocessing": {
+      "channels": [
+        "F3",
+        "Fz",
+        "F4",
+        "T7",
+        "C3",
+        "Cz",
+        "C4",
+        "T8",
+        "CP3",
+        "CP4",
+        "P3",
+        "Pz",
+        "P4",
+        "PO7",
+        "PO8",
+        "Oz"
+      ],
+      "reference": "average_good_eeg",
+      "bandpass_hz": [
+        0.5,
+        30.0
+      ],
+      "filter_type": "butterworth_iir",
+      "filter_order": 4,
+      "filter_direction": "forward_backward",
+      "epoch_ms": [
+        -200,
+        1000
+      ],
+      "baseline_ms": [
+        -200,
+        0
+      ],
+      "model_input_ms": [
+        0,
+        1000
+      ],
+      "resample_hz": 128,
+      "reject_peak_to_peak_uv": 150.0,
+      "flat_peak_to_peak_uv": 0.1,
+      "ica": {
+        "fit_highpass_hz": 1.0,
+        "fit_sfreq_hz": 250,
+        "n_components": 30,
+        "random_state": 42
+      }
+    },
+    "split": {
+      "group": "participant",
+      "train_fraction": 0.8
+    },
+    "features": {
+      "window_ms": 50
+    },
+    "training": {
+      "ml_models": [
+        "majority_baseline",
+        "shrinkage_lda",
+        "rbf_svm"
+      ],
+      "dl_models": [
+        "compact_eeg_cnn",
+        "eeg_inception"
+      ],
+      "optimizer": "adamw",
+      "learning_rate": 0.001,
+      "batch_size": 64,
+      "epochs": 35
+    },
+    "evaluation": {
+      "labels": [
+        "standard",
+        "target"
+      ],
+      "metrics": [
+        "confusion_matrix",
+        "macro_f1"
+      ]
+    }
+  },
+  "bad_channels": [],
+  "event_alignment": {
+    "standard": {
+      "count": 498,
+      "max_difference_ms": 1.0
+    },
+    "target": {
+      "count": 81,
+      "max_difference_ms": 1.0
+    }
+  },
+  "ica": {
+    "status": "review_required_no_match",
+    "fit_sfreq_hz": 250,
+    "component_count": 30,
+    "iterations": 49,
+    "converged": true,
+    "fit_warnings": [],
+    "eog_channels": [],
+    "frontal_proxy_channels": [
+      "Fp1",
+      "Fp2"
+    ],
+    "scores_by_channel": {
+      "Fp1": {
+        "candidates": [
+          0,
+          1
+        ],
+        "correlations": [
+          0.7854540078912131,
+          -0.652602481948762,
+          -0.06573579885189856,
+          0.0080341473733744,
+          -0.01677105976473886,
+          0.060291235755034256,
+          -0.03694441853544826,
+          0.009354759552111487,
+          0.04308760132535439,
+          0.001590638422451216,
+          0.01327135056212685,
+          -0.014359845525477342,
+          -0.09810959238066007,
+          0.0073919607407052145,
+          0.022063405177058147,
+          0.00903781771085515,
+          -0.02099936338569502,
+          0.04422005057318933,
+          0.020527469537082184,
+          -0.07091084175786085,
+          0.0006572031554876838,
+          -0.030239673825550206,
+          0.0006810311811365636,
+          0.025933286393425646,
+          -0.04526945735040551,
+          0.005497970336204801,
+          -0.010498094163107862,
+          0.015550987146142529,
+          -0.027306552046637088,
+          -0.01968991641959237
+        ]
+      },
+      "Fp2": {
+        "candidates": [
+          0,
+          1
+        ],
+        "correlations": [
+          0.8589650620926783,
+          -0.5518200078129551,
+          0.021029267126552377,
+          0.009833005727293209,
+          -0.017349638611051453,
+          0.060341541488710085,
+          -0.029567490584573898,
+          0.009805744210409922,
+          0.02996860107899554,
+          -0.0008627146321867744,
+          0.019095754876141062,
+          -0.01603482116399444,
+          -0.1016131555940615,
+          0.020474709438811578,
+          0.01793936997507145,
+          0.031118718953583098,
+          -0.019028969780914146,
+          0.04413245696945897,
+          0.02288682602095709,
+          -0.07374873047563091,
+          0.0024678162256782515,
+          -0.030536679216485826,
+          -0.001577211130540426,
+          0.02272617000544768,
+          -0.04581312425262763,
+          0.0042466553890963005,
+          -0.014485031322727174,
+          0.016549646406130093,
+          -0.017935839568183353,
+          -0.021762008945759935
+        ]
+      }
+    },
+    "excluded": [],
+    "reason": "Intersection of Fp1/Fp2 MNE candidates with absolute correlations >= 0.9",
+    "model_file": "sub-34-ica.fif",
+    "cleaned_source": "data/processed/ica_cleaned_all/sub-34"
+  },
+  "class_counts": {
+    "standard": {
+      "before": 498,
+      "kept": 494,
+      "dropped": 4,
+      "drop_log_reasons": {
+        "PO7": 1,
+        "F3": 3
+      }
+    },
+    "target": {
+      "before": 81,
+      "kept": 81,
+      "dropped": 0,
+      "drop_log_reasons": {}
+    }
+  },
+  "epoch_times_s": [
+    -0.203125,
+    1.0
+  ],
+  "requested_baseline_s": [
+    -0.2,
+    0.0
+  ],
+  "shape": [
+    575,
+    16,
+    129
+  ],
+  "data_units": "V"
+}

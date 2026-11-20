@@ -1,6 +1,263 @@
 {
-  "status": "pending_data_quality_review",
-  "train": [],
+  "status": "prepared_with_ica_review_status_in_quality_reports",
+  "seed": 42,
+  "train": [
+    "sub-01",
+    "sub-03",
+    "sub-04",
+    "sub-05",
+    "sub-06",
+    "sub-10",
+    "sub-11",
+    "sub-12",
+    "sub-13",
+    "sub-14",
+    "sub-17",
+    "sub-19",
+    "sub-20",
+    "sub-21",
+    "sub-22",
+    "sub-23",
+    "sub-24",
+    "sub-25",
+    "sub-26",
+    "sub-27",
+    "sub-28",
+    "sub-29",
+    "sub-30",
+    "sub-31",
+    "sub-32",
+    "sub-33",
+    "sub-34",
+    "sub-35",
+    "sub-36",
+    "sub-37",
+    "sub-38",
+    "sub-39",
+    "sub-40",
+    "sub-42"
+  ],
   "validation": [],
-  "test": []
+  "test": [
+    "sub-02",
+    "sub-07",
+    "sub-08",
+    "sub-09",
+    "sub-15",
+    "sub-16",
+    "sub-18",
+    "sub-41"
+  ],
+  "participants": {
+    "sub-01": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-01.npz",
+      "standard": 496,
+      "target": 81
+    },
+    "sub-02": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-02.npz",
+      "standard": 495,
+      "target": 80
+    },
+    "sub-03": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-03.npz",
+      "standard": 495,
+      "target": 81
+    },
+    "sub-04": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-04.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-05": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-05.npz",
+      "standard": 496,
+      "target": 81
+    },
+    "sub-06": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-06.npz",
+      "standard": 493,
+      "target": 79
+    },
+    "sub-07": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-07.npz",
+      "standard": 432,
+      "target": 75
+    },
+    "sub-08": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-08.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-09": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-09.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-10": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-10.npz",
+      "standard": 496,
+      "target": 81
+    },
+    "sub-11": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-11.npz",
+      "standard": 496,
+      "target": 81
+    },
+    "sub-12": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-12.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-13": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-13.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-14": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-14.npz",
+      "standard": 479,
+      "target": 78
+    },
+    "sub-15": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-15.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-16": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-16.npz",
+      "standard": 494,
+      "target": 80
+    },
+    "sub-17": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-17.npz",
+      "standard": 488,
+      "target": 79
+    },
+    "sub-18": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-18.npz",
+      "standard": 483,
+      "target": 79
+    },
+    "sub-19": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-19.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-20": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-20.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-21": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-21.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-22": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-22.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-23": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-23.npz",
+      "standard": 515,
+      "target": 86
+    },
+    "sub-24": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-24.npz",
+      "standard": 497,
+      "target": 81
+    },
+    "sub-25": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-25.npz",
+      "standard": 488,
+      "target": 80
+    },
+    "sub-26": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-26.npz",
+      "standard": 497,
+      "target": 81
+    },
+    "sub-27": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-27.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-28": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-28.npz",
+      "standard": 493,
+      "target": 81
+    },
+    "sub-29": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-29.npz",
+      "standard": 497,
+      "target": 81
+    },
+    "sub-30": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-30.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-31": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-31.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-32": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-32.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-33": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-33.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-34": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-34.npz",
+      "standard": 494,
+      "target": 81
+    },
+    "sub-35": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-35.npz",
+      "standard": 490,
+      "target": 80
+    },
+    "sub-36": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-36.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-37": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-37.npz",
+      "standard": 475,
+      "target": 78
+    },
+    "sub-38": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-38.npz",
+      "standard": 581,
+      "target": 96
+    },
+    "sub-39": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-39.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-40": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-40.npz",
+      "standard": 495,
+      "target": 80
+    },
+    "sub-41": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-41.npz",
+      "standard": 498,
+      "target": 81
+    },
+    "sub-42": {
+      "file": "/media/neeyu/hien_31/TTKHTKVUD_26-27/data/processed/channels16/after_ica/sub-42.npz",
+      "standard": 498,
+      "target": 81
+    }
+  }
 }
