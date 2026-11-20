@@ -102,3 +102,20 @@ ML used all 34 training participants while DL holds four out for validation and 
 References:
 - https://braindecode.org/stable/generated/braindecode.models.EEGInceptionERP.html
 - https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
+
+
+## Visualization and temporal occlusion on the server
+
+```bash
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python scripts/visualize.py
+```
+
+The default all stage creates PNG/PDF figures and numerical JSON summaries in results/figures/. Individual stages are --stage metrics, --stage eeg, and --stage occlusion. Metrics plots use the five stored ML/DL results, validate common test participants, and plot DL training loss separately from validation macro-F1. ML results are read from results/metrics/ml with fallback to the earlier results/channels16/metrics/ml location.
+
+ERP at Pz uses the 34 training participants with equal participant weighting. Shading is between-participant standard deviation, not a confidence interval. Epochs start at 0 ms because the stored model input has already been baseline corrected and cropped. Feature distributions illustrate three prespecified Pz intervals (300-350, 400-450 and 500-550 ms), with histograms normalized separately per class.
+
+Occlusion loads the two saved checkpoints, verifies split identity, channel order, time grid and baseline confusion matrix, then masks each non-overlapping 100 ms interval on all channels. The masked value is zero after normalization, equivalent to the fitting-set channel mean in physical units. Checkpoints are evaluated in inference mode; no model fitting is performed. Plots report baseline minus masked macro-F1. Positive values mean performance decreased when that interval was masked. Negative values are possible. JSON also records the mean change in true-class probability. Perturbation sensitivity is an explanation of model behavior under the chosen mask and is not sufficient evidence of causal neural mechanisms.
+
+Results include model_comparison, five confusion matrices, two learning curves, erp_pz, feature_distributions_pz, and two occlusion plots. PNG and PDF share each basename. Use --device cpu for CPU inference if required. Default occlusion uses CUDA. Default EEG paths are taken from configs/splits.json; checkpoint paths are results/checkpoints/dl/.
+
+The metrics stage was exercised locally using supplied result JSON files. EEG data loading and checkpoint inference must be verified on the server.
