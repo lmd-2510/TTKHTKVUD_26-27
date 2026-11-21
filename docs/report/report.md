@@ -1,5 +1,18 @@
 # Single-Trial EEG Classification in the Oddball Task
 
+**Class:** AIT3012
+
+**Submission date:** 23/11/2026
+
+**Members:**
+
+- Lê Minh Đức — 24022291
+- Nguyễn Đức Trung — 24022473
+- Phạm Sỹ Toàn — 24022467
+- Đỗ Hoàng Minh — 24022399
+- Đào Văn Việt — 24022489
+
+
 ## Abstract
 
 This project investigated single-trial classification of frequent standard and rare target stimuli using the Nencki–Symfonia Oddball EEG recordings from 42 participants. Preprocessing combined common-average referencing, 0.5–30 Hz filtering, participant-specific ICA assessment, 16-channel selection, resampling to 128 Hz, prestimulus baseline correction and amplitude-based epoch rejection. The selected processing version retained 24,226 trials. Participants were separated into 34 training and eight test participants. Classical ML used 320 features formed from 50 ms channel-wise averages; two DL networks used the 16 × 129 EEG arrays directly. EEG-Inception achieved the highest observed test macro-F1 of 0.8440 and balanced accuracy of 0.8632, compared with macro-F1 of 0.7578 for the initial RBF SVM. Temporal occlusion showed sensitivity to both middle and late poststimulus intervals. These findings apply to the tested configurations and fixed participant split. Differences in fitting protocols, heuristic artifact decisions and the lack of repeated-split evaluation limit broader conclusions.
@@ -338,14 +351,15 @@ This project prepared 24,226 standard/target trials from 42 participants and com
 
 ## Group Member Contributions
 
-| Member name | Responsibilities and contributions | Contribution (%) |
-|---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| Member name / Student ID | Responsibilities and contributions | Contribution (%) |
+|---|---|---:|
+| Lê Minh Đức / 24022291 | Preprocessing and data quality | 20 |
+| Nguyễn Đức Trung / 24022473 | ERP features and classical ML | 20 |
+| Phạm Sỹ Toàn / 24022467 | CNN training and model comparison | 20 |
+| Đỗ Hoàng Minh / 24022399 | Visualization and CNN explanations | 20 |
+| Đào Văn Việt / 24022489 | Reproducibility, report and integration | 20 |
 
-Total contribution (%) ____________________
+Total contribution: **100%**
 
 ## References
 

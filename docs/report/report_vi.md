@@ -1,5 +1,18 @@
 # Phân loại EEG theo từng lượt trong tác vụ Oddball
 
+**Lớp:** AIT3012
+
+**Ngày nộp:** 23/11/2026
+
+**Thành viên:**
+
+- Lê Minh Đức — 24022291
+- Nguyễn Đức Trung — 24022473
+- Phạm Sỹ Toàn — 24022467
+- Đỗ Hoàng Minh — 24022399
+- Đào Văn Việt — 24022489
+
+
 ## Tóm tắt
 
 Dự án nghiên cứu phân loại từng lượt EEG ứng với kích thích thường gặp (standard) và kích thích mục tiêu hiếm gặp (target) trên dữ liệu Oddball Nencki–Symfonia của 42 người. Tiền xử lý gồm tham chiếu trung bình, lọc 0,5–30 Hz, đánh giá ICA riêng từng người, chọn 16 kênh, lấy mẫu lại ở 128 Hz, chỉnh nền trước kích thích và loại lượt theo biên độ. Phiên bản xử lý được chọn giữ lại 24.226 lượt. Dữ liệu được chia theo người thành 34 người huấn luyện và 8 người kiểm tra. Các mô hình học máy truyền thống dùng 320 đặc trưng trung bình trên các cửa sổ 50 ms; hai mạng học sâu nhận trực tiếp mảng EEG 16 × 129. EEG-Inception đạt macro-F1 cao nhất trên tập kiểm tra là 0,8440 và balanced accuracy là 0,8632; SVM RBF cấu hình ban đầu đạt macro-F1 0,7578. Thử che tín hiệu cho thấy mô hình nhạy với cả khoảng giữa và khoảng muộn sau kích thích. Kết quả áp dụng cho các cấu hình và cách chia người đã thử. Sự khác nhau trong quy trình huấn luyện, quy tắc xử lý nhiễu dựa trên kinh nghiệm và việc chưa đánh giá qua nhiều lần chia dữ liệu giới hạn phạm vi kết luận.
@@ -338,14 +351,15 @@ Dự án chuẩn bị 24.226 lượt standard/target của 42 người và so s�
 
 ## Đóng góp của các thành viên
 
-| Họ và tên | Công việc và đóng góp | Tỷ lệ đóng góp (%) |
-|---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| Họ và tên / MSV | Công việc và đóng góp | Tỷ lệ đóng góp (%) |
+|---|---|---:|
+| Lê Minh Đức / 24022291 | Tiền xử lý và chất lượng dữ liệu | 20 |
+| Nguyễn Đức Trung / 24022473 | Đặc trưng ERP và học máy truyền thống | 20 |
+| Phạm Sỹ Toàn / 24022467 | Huấn luyện CNN và so sánh mô hình | 20 |
+| Đỗ Hoàng Minh / 24022399 | Trực quan hóa và giải thích CNN | 20 |
+| Đào Văn Việt / 24022489 | Tái lập thực nghiệm, báo cáo và tích hợp | 20 |
 
-Tổng tỷ lệ đóng góp (%) ____________________
+Tổng tỷ lệ đóng góp: **100%**
 
 ## Tài liệu tham khảo
 
