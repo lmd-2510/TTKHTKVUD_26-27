@@ -273,6 +273,42 @@ Compact CNN còn nhạy ở 400–500 ms, giảm 0,0192, và 300–400 ms, giả
 
 Hai mạng nhạy trong khoảng ERP, còn EEG-Inception sử dụng cả thông tin muộn. Việc che 700–800 ms gây giảm mạnh nhất ở EEG-Inception cho thấy quyết định chưa thể quy hoàn toàn cho đỉnh P300. Thông tin muộn có thể liên quan xử lý kéo dài hoặc phản ứng trong tác vụ; các khả năng này chưa được tách bằng thí nghiệm. Kết quả mô tả độ nhạy với cách che đã chọn, chưa xác định nguồn thần kinh mang quan hệ nhân quả.
 
+## Phân tích bổ sung về thời gian phản ứng và khả năng nhận diện target
+
+### Câu hỏi và quy trình phân tích
+
+Từ độ nhạy ở khoảng muộn trong phép che thời gian, phân tích này đặt câu hỏi: khả năng nhận diện target có tương đương giữa các lượt có thời gian phản ứng khác nhau không? Phân tích áp dụng cho cả năm mô hình. Thời gian phản ứng chỉ dùng để chia nhóm khi phân tích dự đoán, không được đưa vào đầu vào mô hình.
+
+Mỗi epoch target được giữ lại được ghép với sự kiện kích thích gốc bằng mã người tham gia và vị trí mẫu trong bản ghi. Phản hồi hợp lệ là marker S 1 đầu tiên xuất hiện từ 100 ms đến trước 1.000 ms sau kích thích, đồng thời trước kích thích S 5/S 6/S 7 kế tiếp. Các lượt không tìm thấy marker thỏa điều kiện được tách riêng; điều này không khẳng định người tham gia hoàn toàn không bấm nút ngoài khoảng ghép đã chọn.
+
+Phân vị 25 và 75 của thời gian phản ứng hợp lệ ở các epoch target được giữ lại từ 30 người fit xác định hai ngưỡng xấp xỉ 446 và 582 ms. Nhóm nhanh có thời gian không vượt ngưỡng dưới; nhóm vừa lớn hơn ngưỡng dưới và không vượt ngưỡng trên; nhóm chậm lớn hơn ngưỡng trên. Code dùng ngưỡng đầy đủ độ chính xác trong summary; số mili giây trình bày được làm tròn.
+
+Phân tích chỉ dùng sub-10, sub-20, sub-27 và sub-28: 2.309 epoch validation, gồm 1.985 standard và 324 target. Baseline, LDA và SVM được fit lại với cấu hình cố định trên cùng 30 người dùng để fit DL. Hai checkpoint DL có sẵn được sử dụng lại, không train lại. Vì vậy, nhóm người fit ML ở phân tích validation này khác thí nghiệm ML chính dùng 34 người để đánh giá test. Phần mở rộng không dùng dự đoán của người thuộc tập test.
+
+### Kết quả và diễn giải
+
+Thước đo trong bảng là target recall: số target dự đoán đúng chia cho tổng target thật trong từng nhóm. Đây không phải macro-F1 và không thể hiện số standard bị dự đoán nhầm thành target.
+
+| Mô hình | Nhanh (n=51) | Vừa (n=163) | Chậm (n=95) | Không có phản hồi hợp lệ (n=15) |
+|---|---:|---:|---:|---:|
+| Majority baseline | 0,0% | 0,0% | 0,0% | 0,0% |
+| Shrinkage LDA | 94,1% | 86,5% | 82,1% | 40,0% |
+| RBF SVM | 90,2% | 84,0% | 76,8% | 33,3% |
+| Compact CNN | 96,1% | 83,4% | 74,7% | 26,7% |
+| EEG-Inception | 96,1% | 88,3% | 85,3% | 20,0% |
+
+![Target recall theo nhóm thời gian phản ứng trên bốn người validation](figures/target_recall_by_response_time.png)
+
+*Phân tích thời gian phản ứng trên cả năm mô hình. Số mẫu là số epoch target, giống nhau giữa các mô hình. Ngưỡng chia nhóm được tính từ người thuộc tập fit. Nhóm không tìm thấy phản hồi hợp lệ chỉ có 15 target.*
+
+Cả bốn mô hình học được đều có target recall tổng hợp giảm từ nhóm nhanh sang vừa rồi chậm. EEG-Inception giữ recall cao nhất ở nhóm vừa và chậm, lần lượt 88,3% và 85,3%. Mức giảm từ nhanh sang chậm của mạng này khoảng 10,8 điểm phần trăm, so với 21,3 điểm của Compact CNN. Majority baseline luôn dự đoán standard nên target recall bằng 0 trong mọi nhóm. Các mô hình học được cũng nhận diện kém ở nhóm không có phản hồi hợp lệ, nhưng nhóm này ít mẫu.
+
+Thành phần người tham gia giới hạn cách diễn giải: sub-27 đóng góp 42/51 target phản ứng nhanh, còn sub-10 đóng góp 14/15 target không tìm thấy phản hồi hợp lệ. Vì vậy, chênh lệch tổng hợp có thể phản ánh cả thời gian phản ứng và đặc điểm riêng từng người. Validation cũng đã dùng để chọn checkpoint DL, nên đây là phân tích mô tả, chưa phải đánh giá độc lập. Chưa tính khoảng bất định hay kiểm định ý nghĩa thống kê.
+
+Kết luận được hỗ trợ là có mối liên hệ quan sát được giữa nhóm thời gian phản ứng và khả năng nhận diện target trên nhóm validation này. Phân tích chưa chứng minh phản ứng chậm gây dự đoán sai, xác định nguồn thần kinh vận động, hoặc chứng minh độ nhạy ở khoảng muộn là do bấm nút. Bước đối chiếu riêng trong từng người có thể giúp đánh giá tính nhất quán của xu hướng tổng hợp; hiện chưa hoàn thành bước đó.
+
+Bằng chứng phân tích được lưu tại `results/analysis/response_models/summary.json` và `predictions.csv`; cách ghép phản hồi được mô tả trong `scripts/analyze_responses.py` và `scripts/analyze_model_responses.py`.
+
 ## Thảo luận các câu hỏi nghiên cứu
 
 ### Câu hỏi 1. Kết quả phân loại từng lượt tốt nhất giữa standard và target là gì?
@@ -287,16 +323,14 @@ Hai mạng DL đều vượt baseline ML mạnh nhất về macro-F1. Compact CN
 
 Che theo thời gian giải thích một phần hành vi của mạng đã học. Độ nhạy xấp xỉ 300–600 ms phù hợp điện thế dương target rộng tại Pz. EEG-Inception còn nhạy đáng kể ở 600–900 ms. Phép thử xác định các khoảng đáng xem kỹ và hỗ trợ giải thích dựa trên thông tin giữa và muộn sau kích thích. Do che toàn bộ kênh cùng lúc, phương pháp hiện tại chưa gán ảnh hưởng cho một điện cực cụ thể hoặc phân biệt thành phần ERP, hoạt động vận động và nhiễu còn sót.
 
-## Giới hạn và phạm vi kết luận
+## Định hướng phát triển
 
-- **Một lần chia theo người, một seed huấn luyện.** Chưa có khoảng tin cậy hay kiểm định ý nghĩa theo cặp. Khả năng khái quát ngoài tám người test còn chưa chắc chắn.
-- **Quy trình chọn mô hình khác nhau.** ML dùng 34 người fit và tham số cố định. DL dùng 30 người fit, bốn người validation và chọn epoch tốt nhất. So sánh hiện tại bao phủ các quy trình này.
-- **Quyết định ICA và nhiễu còn sót.** Mười ba người giữ tín hiệu sau lọc vì không có thành phần đạt quy tắc kênh trán. Ngưỡng 0,9 và ngưỡng gần phẳng 0,1 µV là lựa chọn của dự án. Hai ví dụ trước/sau chưa xác nhận chất lượng sạch nhiễu của mọi người.
-- **Lựa chọn kênh và biên độ.** Nhóm chọn 16 kênh và ngưỡng loại trên toàn epoch. Chưa hoàn tất so sánh phân loại đầy đủ 127 với 16 kênh hoặc khảo sát độ nhạy của ngưỡng. Giữ thêm mẫu chưa đủ để xác nhận phân loại tốt hơn.
-- **Hành vi và nhãn kích thích.** Nhãn theo loại kích thích ngay cả khi phản ứng sai. Sub-02, sub-14, sub-17 được giữ dù tác giả bộ dữ liệu đã nêu vấn đề hành vi. Điều này có thể tăng biến thiên mức tham gia tác vụ.
-- **Phương pháp giải thích còn hạn chế.** Occlusion phụ thuộc giá trị tham chiếu và độ rộng cửa sổ. Che đột ngột có thể tạo đầu vào khác EEG tự nhiên; tác động từng khoảng chưa chắc cộng được với nhau. Ảnh hưởng mạnh ở khoảng muộn có thể chứa nhiều quá trình. Phân tích chưa xác lập nhân quả thần kinh.
-- **Việc sử dụng kết quả test.** Nhóm đã xem test để báo cáo và giải thích mô tả. Nếu tiếp tục thay mô hình hoặc tiền xử lý theo những kết quả đó, cần kế hoạch đánh giá mới để hỗ trợ kết luận hiệu quả cuối ít thiên lệch.
-- **Hồ sơ tái lập.** Checkpoint lưu chuẩn hóa và phân công người; metric lưu phiên bản thư viện và thiết lập. Mã kiểm tra dữ liệu và báo cáo chất lượng cần đi kèm phiên bản code. Đường dẫn tuyệt đối trong split cần điều chỉnh khi chuyển dữ liệu server.
+Quy trình hiện tại tạo cơ sở để mở rộng đánh giá theo người, hoàn thiện biểu diễn đầu vào và khảo sát mối liên hệ giữa dự đoán EEG với hành vi trong tác vụ. Các thí nghiệm sau được đề xuất cho giai đoạn tiếp theo.
+
+- **Đánh giá tính ổn định giữa những người tham gia.** Lặp lại các lần chia không trùng người và seed huấn luyện, ước lượng bất định theo người, đồng thời dùng quy trình fit và chọn mô hình tương đương cho ML và DL. Việc phát triển tiếp theo sử dụng train/validation; một nhóm được dành riêng sẽ dùng cho đánh giá cuối.
+- **So sánh bộ kênh và thiết lập tiền xử lý.** So sánh biểu diễn 16 kênh hiện tại với toàn bộ 127 kênh EEG được ghi bằng cùng quy trình đánh giá. Khảo sát lựa chọn thành phần ICA và ngưỡng biên độ cùng với số lượt giữ lại, target recall và macro-F1 để xác định thiết lập bảo toàn thông tin hữu ích.
+- **Mở rộng phân tích thời gian phản ứng trong từng người.** So sánh target recall giữa các nhóm thời gian phản ứng riêng cho từng người, giữ nhóm không tìm thấy phản hồi hợp lệ thành một nhóm riêng. Bước này giúp đánh giá xu hướng tổng hợp có nhất quán giữa các cá nhân hay không. Sau đó có thể phân tích EEG căn theo thời điểm phản hồi để khảo sát thời gian xuất hiện thông tin liên quan đến phản ứng trong tác vụ.
+- **Phát triển giải thích theo không gian và thời gian.** Kết hợp che theo thời gian với che từng kênh hoặc vùng điện cực, thay đổi độ rộng cửa sổ và giá trị tham chiếu, đồng thời đối chiếu tín hiệu căn theo kích thích với tín hiệu căn theo phản hồi. Các thí nghiệm này giúp làm rõ vị trí và khoảng thời gian hỗ trợ phân loại, từ đó xây dựng giả thuyết về thông tin ERP và hoạt động muộn trong tác vụ.
 
 ## Kết luận
 

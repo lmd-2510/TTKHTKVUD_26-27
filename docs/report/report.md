@@ -272,6 +272,42 @@ Compact CNN was also sensitive to 400–500 ms (decrease 0.0192) and 300–400 m
 
 Both networks show sensitivity within the ERP interval, while EEG-Inception also uses information in later intervals. The strongest EEG-Inception change at 700–800 ms means that its decision cannot be attributed entirely to the P300 peak. Late information could reflect extended processing or responses associated with the task; these alternatives were not separated experimentally. These results describe sensitivity to the chosen mask and do not identify causal neural sources.
 
+## Exploratory Analysis of Response Time and Target Detection
+
+### Question and analysis protocol
+
+Following the late-window sensitivity observed in temporal occlusion, this analysis asked whether target detection was comparable across trials with different behavioral response times. It examined all five classifiers. Response time was used only to group predictions for analysis and was not supplied as a model input.
+
+Each retained target epoch was matched to its original stimulus event using the participant identifier and raw event sample. The first S 1 marker at least 100 ms and strictly less than 1,000 ms after the stimulus, and before the next S 5/S 6/S 7 stimulus, defined an eligible response. Trials without such a marker formed a separate group; this definition does not establish that no button press occurred outside the matching window.
+
+The 25th and 75th percentiles of eligible target response times among retained epochs from the 30 fitting participants defined boundaries of approximately 446 and 582 ms. Fast trials were at or below the lower boundary, middle trials were above the lower boundary and at or below the upper boundary, and slow trials were above the upper boundary. Group membership used the full-precision boundaries stored in the analysis summary; displayed times are rounded.
+
+Evaluation used only sub-10, sub-20, sub-27 and sub-28: 2,309 validation epochs, comprising 1,985 standards and 324 targets. The baseline, LDA and SVM were refitted with their fixed settings on the same 30 fitting participants used by DL. The two existing DL checkpoints were reused without retraining. Consequently, these ML validation results use a different fitting cohort from the original 34-participant ML test experiment. No test participant predictions were used in this extension.
+
+### Results and interpretation
+
+The metric below is target recall: correctly predicted targets divided by all true targets in the corresponding response group. It is not macro-F1 and does not measure false target predictions among standards.
+
+| Model | Fast (n=51) | Middle (n=163) | Slow (n=95) | No eligible response (n=15) |
+|---|---:|---:|---:|---:|
+| Majority baseline | 0.0% | 0.0% | 0.0% | 0.0% |
+| Shrinkage LDA | 94.1% | 86.5% | 82.1% | 40.0% |
+| RBF SVM | 90.2% | 84.0% | 76.8% | 33.3% |
+| Compact CNN | 96.1% | 83.4% | 74.7% | 26.7% |
+| EEG-Inception | 96.1% | 88.3% | 85.3% | 20.0% |
+
+![Target recall by response-time group on four validation participants](figures/target_recall_by_response_time.png)
+
+*Response-time analysis across all five classifiers. Counts refer to target epochs and are shared across models. Boundaries were obtained from fitting participants. The no-eligible-response group contains only 15 targets.*
+
+All four learned classifiers showed decreasing pooled target recall from fast to middle to slow responses. EEG-Inception retained the highest recall in the middle and slow groups (88.3% and 85.3%). Its fast-to-slow decrease was approximately 10.8 percentage points, compared with 21.3 points for Compact CNN. The majority baseline never predicted target and therefore had zero target recall in every group. Low recall without an eligible response was observed across learned models, but the group was small.
+
+Participant composition limits interpretation: sub-27 contributed 42 of the 51 fast targets, while sub-10 contributed 14 of the 15 targets without an eligible response. These pooled differences can therefore reflect both behavioral timing and differences between participants. Validation also served to select the DL checkpoints, so this is a descriptive analysis rather than an independent performance evaluation. No uncertainty intervals or significance tests were calculated.
+
+The supported conclusion is an association between response-time group and target detection in this validation cohort. The analysis does not show that slow responses cause errors, identify motor-related neural sources, or prove that late occlusion sensitivity is caused by button pressing. A follow-up comparison within each participant would help assess whether the pooled trend is consistent across individuals; that comparison has not yet been completed.
+
+Analysis records are stored in `results/analysis/response_models/summary.json` and `predictions.csv`; response matching is documented by `scripts/analyze_responses.py` and `scripts/analyze_model_responses.py`.
+
 ## Discussion of the Research Questions
 
 ### RQ1. What is the best single-trial classification result for frequent versus target stimuli?
@@ -286,16 +322,14 @@ Both implemented DL networks exceeded the strongest initial ML baseline in macro
 
 Temporal occlusion provides partial explanation of the trained networks' behavior. Sensitivity in approximately 300–600 ms aligns with the broad target positivity observed at Pz. EEG-Inception also shows substantial sensitivity in 600–900 ms. This identifies intervals worth further examination and supports an explanation involving both middle and late poststimulus information. The current experiment masks all channels jointly, so it cannot assign the effect to a particular electrode or distinguish specific ERP components, motor activity and residual artifacts.
 
-## Limitations and Scope of Conclusions
+## Future Directions
 
-- **One participant split and one training seed.** The results have no confidence intervals or paired significance tests, and generalization beyond these eight test participants remains uncertain.
-- **Different model-selection protocols.** ML used 34 fitting participants and fixed parameters. DL used 30 fitting participants, four validation participants and best-epoch selection. The present comparison covers these complete protocols.
-- **ICA decisions and residual artifacts.** Thirteen participants retained filtered signals without component removal because no component met the automatic frontal-proxy rule. The 0.9 threshold and the 0.1 µV flatness safeguard are project choices. Two illustrated before/after examples do not establish artifact-free EEG for every participant.
-- **Channel and amplitude choices.** The project selected 16 channels and fixed whole-epoch rejection thresholds. It did not complete a full 127-versus-16-channel classification comparison or threshold-sensitivity study. Higher trial retention alone does not establish better classification.
-- **Behavior and stimulus labels.** Labels follow stimulus identity even when participants respond incorrectly. Sub-02, sub-14 and sub-17 were retained despite the behavioral concerns described by the dataset authors. This may add variability in task engagement.
-- **Limited explanation method.** Occlusion depends on the reference value and window width. Abrupt masking can produce inputs that differ from natural EEG, and individual-window effects need not add together. A stronger effect in a late interval may involve several task-related processes. The analysis does not establish neural causality.
-- **Use of held-out results.** Test results were inspected for reporting and descriptive explanation. Subsequent model or preprocessing changes informed by these results would require a fresh evaluation plan to support an unbiased final performance claim.
-- **Reproducibility records.** Checkpoints record normalization and participant assignments; metric files record library versions and settings. Dataset file checksums and quality reports should accompany the code version used for the experiments. Local absolute paths in the split inventory must be adapted when relocating the server data.
+The current pipeline provides a basis for extending participant-level evaluation, refining the input representation and examining the relationship between EEG predictions and task behavior. The following experiments are proposed for subsequent work.
+
+- **Evaluate stability across participants.** Repeat participant-disjoint splits and training seeds, estimate uncertainty at participant level, and use matched fitting and model-selection protocols for ML and DL. Future development should use training/validation data, with a separately reserved cohort for final evaluation.
+- **Compare channel sets and preprocessing settings.** Compare the current 16-channel representation with all 127 recorded EEG channels under the same evaluation protocol. Examine ICA component selection and amplitude thresholds together with trial retention, target recall and macro-F1 to identify settings that preserve useful information.
+- **Extend response-time analysis within participants.** Compare target recall across response-time groups separately for each participant, retaining trials without an eligible response as a separate category. This would help assess whether the pooled pattern is consistent across individuals. Response-aligned EEG analysis could then explore the timing of information associated with task responses.
+- **Develop spatial and temporal explanations.** Combine temporal occlusion with channel or scalp-region occlusion, vary the masking window and reference value, and compare stimulus-aligned with response-aligned patterns. These experiments could clarify which locations and intervals support classification and guide hypotheses about ERP-related and later task activity.
 
 ## Conclusion
 
